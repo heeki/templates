@@ -1,0 +1,204 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Step Functions template
+Transform: AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    Layers:
+      - !Sub 'arn:aws:lambda:${AWS::Region}:546275881527:layer:xray-python3:1'
+    MemorySize: !Ref pFnMemory
+    Runtime: python3.9
+    Timeout: !Ref pFnTimeout
+    Tracing: Active
+Parameters:
+  pAslBucket:
+    Type: String
+  pAslKey:
+    Type: String
+  pFnMemory:
+    Type: Number
+  pFnTimeout:
+    Type: Number
+Resources:
+# Step Function
+  SFnExecRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - states.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: '/service-role/'
+      Policies:
+        - PolicyName: cloudwatch-logs
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogDelivery
+                  - logs:GetLogDelivery
+                  - logs:UpdateLogDelivery
+                  - logs:DeleteLogDelivery
+                  - logs:ListLogDeliveries
+                  - logs:PutResourcePolicy
+                  - logs:DescribeResourcePolicies
+                  - logs:DescribeLogGroups
+                Resource: "*"
+        - PolicyName: lambda
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                Resource:
+                  - !GetAtt Fn1.Arn
+                  - !GetAtt Fn2A.Arn
+                  - !GetAtt Fn2B.Arn
+                  - !GetAtt Fn3A.Arn
+                  - !GetAtt Fn3B.Arn
+  SFn:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+        DefinitionS3Location:
+          Bucket: !Ref pAslBucket
+          Key: !Ref pAslKey
+        DefinitionSubstitutions:
+          Fn1: !GetAtt Fn1.Arn
+          Fn2A: !GetAtt Fn2A.Arn
+          Fn2B: !GetAtt Fn2B.Arn
+          Fn3A: !GetAtt Fn3A.Arn
+          Fn3B: !GetAtt Fn3B.Arn
+        LoggingConfiguration:
+          Destinations:
+            - CloudWatchLogsLogGroup:
+                LogGroupArn: !GetAtt SFnLogGroup.Arn
+          IncludeExecutionData: true
+          Level: ALL
+        RoleArn: !GetAtt SFnExecRole.Arn
+        StateMachineType: STANDARD
+        TracingConfiguration:
+          Enabled: false
+  SFnLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/sf/sf-template"
+      RetentionInDays: 7
+  # Lambda
+  FnRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: '/service-role/'
+      Policies:
+        - PolicyName: cloudwatch-insights
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                Resource: '*'
+        - PolicyName: cloudwatch-logs
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                  - logs:DescribeLogStreams
+                Resource: 'arn:aws:logs:*:*:log-group:*:*'
+        - PolicyName: xray
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - xray:PutTraceSegments
+                  - xray:PutTelemetryRecords
+                  - xray:GetSamplingRules
+                  - xray:GetSamplingTargets
+                  - xray:GetSamplingStatisticSummaries
+                Resource: '*'
+  Fn1:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../src
+      Handler: fn.handler
+      Role: !GetAtt FnRole.Arn
+  Fn1LogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${Fn1}'
+      RetentionInDays: 7
+  Fn2A:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../src
+      Handler: fn.handler
+      Role: !GetAtt FnRole.Arn
+  Fn2ALogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${Fn2A}'
+      RetentionInDays: 7
+  Fn2B:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../src
+      Handler: fn.handler
+      Role: !GetAtt FnRole.Arn
+  Fn2BLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${Fn2B}'
+      RetentionInDays: 7
+  Fn3A:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../src
+      Handler: fn.handler
+      Role: !GetAtt FnRole.Arn
+  Fn3ALogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${Fn3A}'
+      RetentionInDays: 7
+  Fn3B:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ../src
+      Handler: fn.handler
+      Role: !GetAtt FnRole.Arn
+  Fn3BLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${Fn3B}'
+      RetentionInDays: 7
+Outputs:
+  outSFn:
+    Value: !Ref SFn
+  outFn1:
+    Value: !Ref Fn1
+  outFn2A:
+    Value: !Ref Fn2A
+  outFn2B:
+    Value: !Ref Fn2B
+  outFn3A:
+    Value: !Ref Fn3A
+  outFn3B:
+    Value: !Ref Fn3B

@@ -1,0 +1,46 @@
+{
+    "StartAt": "Step1",
+    "States": {
+        "Step1": {
+            "Type": "Task",
+            "Resource": "${Fn1}",
+            "Next": "Parallel"
+        },
+        "Parallel": {
+            "Type": "Parallel",
+            "End": true,
+            "Branches": [
+                {
+                    "StartAt": "Step2A",
+                    "States": {
+                        "Step2A": {
+                            "Type": "Task",
+                            "Resource": "${Fn2A}",
+                            "Next": "Step2B"
+                        },
+                        "Step2B": {
+                            "Type": "Task",
+                            "Resource": "${Fn2B}",
+                            "End": true
+                        }
+                    }
+                },
+                {
+                    "StartAt": "Step3A",
+                    "States": {
+                        "Step3A": {
+                            "Type": "Task",
+                            "Resource": "${Fn3A}",
+                            "Next": "Step3B"
+                        },
+                        "Step3B": {
+                            "Type": "Task",
+                            "Resource": "${Fn3B}",
+                            "End": true
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
