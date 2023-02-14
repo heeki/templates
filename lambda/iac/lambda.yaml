@@ -66,6 +66,17 @@ Resources:
       CodeUri: ../src
       Handler: fn.handler
       Role: !GetAtt FnRole.Arn
+      # AutoPublishAlias: live
+      # DeploymentPreference:
+      #   Type: Linear10PercentEvery1Minute
+      #   Hooks:
+      #     PreTraffic: !Ref PreTrafficFn
+      # Environment:
+      #   Variables:
+      #     SECRETS_MANAGER_TIMEOUT_MILLIS: 1000
+      #     SECRETS_MANAGER_TTL: 300
+      # Layers:
+      #   - 'arn:aws:lambda:us-east-1:177933569100:layer:AWS-Parameters-and-Secrets-Lambda-Extension:2'
   FnLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
