@@ -2,7 +2,7 @@ include etc/environment.sh
 
 apigw: apigw.package apigw.deploy
 apigw.package:
-	sam package -t ${APIGW_TEMPLATE} --output-template-file ${APIGW_OUTPUT} --s3-bucket ${S3BUCKET}
+	sam package -t ${APIGW_TEMPLATE} --output-template-file ${APIGW_OUTPUT} --s3-bucket ${S3BUCKET} --s3-prefix ${LAMBDA_STACK}
 apigw.deploy:
 	sam deploy -t ${APIGW_OUTPUT} --stack-name ${APIGW_STACK} --parameter-overrides ${APIGW_PARAMS} --capabilities CAPABILITY_NAMED_IAM
 
