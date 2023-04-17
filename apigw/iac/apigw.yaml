@@ -133,5 +133,7 @@ Resources:
 Outputs:
   outApi:
     Value: !Ref Api
+  outApiEndpoint:
+    Value: !Sub 'https://${Api}.execute-api.${AWS::Region}.amazonaws.com/${pApiStage}'
   outFn:
     Value: !Ref Fn
