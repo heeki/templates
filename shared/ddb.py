@@ -28,7 +28,7 @@ class AdptDynamoDB:
                 TableName=self.table,
                 Item=item
             )
-        except botocore.exceptions.ResourceNotFoundException as e:
+        except botocore.exceptions.ClientError as e:
             response = {
                 "ResponseMetadata": {
                     "HTTPStatusCode": 404
@@ -77,6 +77,12 @@ class AdptDynamoDB:
                 "error": e
             }
         return response
+
+    def scan(self):
+        response = self.client.scan(
+            TableName=self.table
+        )
+        return response["Items"]
 
     def _query(self, expression_values, key_condition, projection_expression, last_key=None):
         if last_key is None:
@@ -145,9 +151,3 @@ class AdptDynamoDB:
             }
         )
         return response
-
-    def scan(self):
-        response = self.client.scan(
-            TableName=self.table
-        )
-        return response["Items"]
