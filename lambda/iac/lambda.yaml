@@ -4,10 +4,11 @@ Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
     Layers:
-      - !Sub 'arn:aws:lambda:us-east-1:546275881527:layer:xray-python3:1'
-      - arn:aws:lambda:us-east-1:580247275435:layer:LambdaInsightsExtension:35
+      - arn:aws:lambda:us-east-1:546275881527:layer:xray-python3:1
+      - arn:aws:lambda:us-east-1:546275881527:layer:boto3-1-26-101:4
+      - arn:aws:lambda:us-east-1:580247275435:layer:LambdaInsightsExtension:38
     MemorySize: !Ref pFnMemory
-    Runtime: python3.9
+    Runtime: python3.11
     Timeout: !Ref pFnTimeout
     Tracing: Active
 Parameters:
@@ -29,7 +30,7 @@ Resources:
                 - lambda.amazonaws.com
             Action:
               - sts:AssumeRole
-      Path: '/service-role/'
+      Path: '/'
       Policies:
         - PolicyName: cloudwatch-insights
           PolicyDocument:
@@ -83,6 +84,19 @@ Resources:
     Properties:
       LogGroupName: !Sub '/aws/lambda/${Fn}'
       RetentionInDays: 7
+  LayerTbd:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      CompatibleRuntimes:
+        - python3.8
+        - python3.9
+        - python3.10
+        - python3.11
+      ContentUri: ../tmp/tbd
+      LayerName: tbd
+      Description: tbd==0.0.306
 Outputs:
   outFn:
     Value: !Ref Fn
+  outLayerTbd:
+    Value: !Ref LayerTbd

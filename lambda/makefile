@@ -1,6 +1,9 @@
 include etc/environment.sh
 
-lambda: lambda.package lambda.
+layer.tbd:
+	pip install -r requirements.txt --target=tmp/tbd/python --upgrade
+
+lambda: lambda.package lambda.deploy
 lambda.build:
 	sam build -t ${LAMBDA_TEMPLATE} --parameter-overrides ${LAMBDA_PARAMS} --build-dir build --manifest requirements.txt --use-container
 lambda.package:

@@ -5,7 +5,7 @@ from aws_xray_sdk.core import patch_all
 
 # initialization
 session = boto3.session.Session()
-client = session.client('sqs')
+client = session.client("sqs")
 patch_all()
 
 # helper functions
