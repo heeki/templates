@@ -1,0 +1,45 @@
+PROFILE=your-cli-profile
+BUCKET=your-s3-bucket
+REGION=us-east-1
+
+P_CHANCE_OF_FAILURE=5
+P_API_STAGE=dev
+P_FN_MEMORY=128
+P_FN_TIMEOUT=15
+LAMBDA_STACK=your-stack-name
+LAMBDA_TEMPLATE=iac/lambda.yaml
+LAMBDA_OUTPUT=iac/lambda_output.yaml
+LAMBDA_PARAMS="ParameterKey=pChanceOfFailure,ParameterValue=${P_CHANCE_OF_FAILURE} ParameterKey=pApiStage,ParameterValue=${P_API_STAGE} ParameterKey=pFnMemory,ParameterValue=${P_FN_MEMORY} ParameterKey=pFnTimeout,ParameterValue=${P_FN_TIMEOUT}"
+O_FN=output-fn-name
+O_API_ENDPOINT=output-api-endpoint
+
+P_VPC_ID=your-vpc-id
+P_HOSTEDZONE_ID=your-public-hosted-zone-id
+P_DOMAINNAME=buildit.heeki.cloud
+P_CLIENT_INGRESS_CIDR=your-ingress-cidr
+P_SUBNETIDS_PUBLIC=-your-comma-separated-list-of-subnet-ids
+INFRASTRUCTURE_STACK=buildit-ecs-infrastructure
+INFRASTRUCTURE_TEMPLATE=iac/infrastructure.yaml
+INFRASTRUCTURE_OUTPUT=iac/infrastructure_output.yaml
+INFRASTRUCTURE_PARAMS="ParameterKey=pVpcId,ParameterValue=${P_VPC_ID} ParameterKey=pHostedZoneId,ParameterValue=${P_HOSTEDZONE_ID} ParameterKey=pDomainName,ParameterValue=${P_DOMAINNAME} ParameterKey=pClientIngressCidr,ParameterValue=${P_CLIENT_INGRESS_CIDR} ParameterKey=pSubnetIds,ParameterValue=${P_SUBNETIDS_PUBLIC}"
+O_CERT_ARN=output-certificate-arn
+O_ALB_ARN=output-alb-arn
+O_ALB_TGROUP=output-alb-target-group-arn
+O_SGROUP_ALB=output-sgroup-alb
+O_SGROUP_TASK=output-sgroup-task
+
+export DICE_TABLE=your-dynamodb-table-name
+export CHANCE_OF_FAILURE=5
+
+C_REPO_BASE=${ACCOUNTID}.dkr.ecr.${REGION}.amazonaws.com
+C_REPO_IMAGE=your-ecr-repository-name
+C_VERSION=1
+C_TAG=${C_REPO_IMAGE}:${C_VERSION}
+C_REPO_URI=${C_REPO_BASE}/${C_REPO_IMAGE}:${C_VERSION}
+
+P_DESIRED_COUNT=2
+P_TABLE_ARN=your-dynamodb-table-arn
+ECS_STACK=buildit-ecs-cluster
+ECS_TEMPLATE=iac/ecs.yaml
+ECS_OUTPUT=iac/ecs_output.yaml
+ECS_PARAMS="ParameterKey=pDesiredCount,ParameterValue=${P_DESIRED_COUNT} ParameterKey=pALBArn,ParameterValue=${O_ALB_ARN} ParameterKey=pTargetGroupArn,ParameterValue=${O_ALB_TGROUP} ParameterKey=pTaskSGroup,ParameterValue=${O_SGROUP_TASK} ParameterKey=pSubnetIds,ParameterValue=${P_SUBNETIDS_PUBLIC} ParameterKey=pImageUri,ParameterValue=${C_REPO_URI} ParameterKey=pTableArn,ParameterValue=${P_TABLE_ARN}"
