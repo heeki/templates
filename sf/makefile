@@ -2,8 +2,7 @@ include etc/environment.sh
 
 sf: sf.package sf.deploy
 sf.package:
-	aws s3 cp iac/asl.json s3://${P_ASLBUCKET}/${P_ASLKEY}
-	sam package -t ${SF_TEMPLATE} --output-template-file ${SF_OUTPUT} --s3-bucket ${S3BUCKET}
+	sam package -t ${SF_TEMPLATE} --output-template-file ${SF_OUTPUT} --s3-bucket ${BUCKET} --s3-bucket ${SF_STACK}
 sf.deploy:
 	sam deploy -t ${SF_OUTPUT} --stack-name ${SF_STACK} --parameter-overrides ${SF_PARAMS} --capabilities CAPABILITY_NAMED_IAM
 
