@@ -1,0 +1,12 @@
+PROFILE=your-aws-cli-profile
+REGION=us-east-1
+BUCKET=your-configuration-bucket
+
+P_FN_MEMORY=128
+P_FN_TIMEOUT=15
+SF_STACK=sf-template
+SF_TEMPLATE=iac/sf.yaml
+SF_OUTPUT=iac/sf_output.yaml
+SF_PARAMS="ParameterKey=pAslBucket,ParameterValue=${P_ASLBUCKET} ParameterKey=pAslKey,ParameterValue=${P_ASLKEY} ParameterKey=pFnMemory,ParameterValue=${P_FN_MEMORY} ParameterKey=pFnTimeout,ParameterValue=${P_FN_TIMEOUT}"
+O_FN=output-fn
+O_SF=output-sf

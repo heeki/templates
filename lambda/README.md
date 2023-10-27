@@ -1,5 +1,5 @@
 # Overview
-This directory is for deploying an API Gateway endpoint and a Lambda function.
+This directory is for deploying only a Lambda function.
 
 ## Pre-requisites
 Copy `etc/environment.template` to `etc/environment.sh` and update accordingly.
@@ -8,20 +8,16 @@ Copy `etc/environment.template` to `etc/environment.sh` and update accordingly.
 * `BUCKET`: your configuration bucket
 
 For the Lambda and API Gateway stack, update the following accordingly.
-* `P_STAGE`: stage name for API Gateway
 * `P_FN_MEMORY`: amount of memory in MB for the Lambda function
 * `P_FN_TIMEOUT`: timeout in seconds for the Lambda function
 
 ## Deployment
-Deploy the Lambda and API Gateway resources: `make apigw`
+Deploy the Lambda and API Gateway resources: `make lambda`
 
 After completing the deployment, update the following outputs:
 * `O_FN`: output Lambda function name
-* `O_API_ENDPOINT`: output API Gateway endpoint, e.g. https://<api_id>.execute-api.<region>.amazonaws.com/<stage>
 
 ## Testing
-Test the function locally: `make sam.local.invoke`
+Test the function locally: `make lambda.local`
 
-Test the deployed function: `make sam.invoke.sync`
-
-To test the API endpoint: `curl -s -XGET ${O_API_ENDPOINT} | jq`
+Test the deployed function: `make lambda.invoke.sync`
