@@ -14,18 +14,16 @@ Globals:
     Tracing: Active
 Parameters:
   # APIGW
-  pVpcEndpointId:
-    Type: String
-  pVpcId:
-    Type: String
   pApiDomainName:
     Type: String
   pApiBasePath:
     Type: String
   pApiStage:
     Type: String
-  pApiAuthorizer:
-    Type: String
+  # pVpcEndpointId:
+  #   Type: String
+  # pVpcId:
+  #   Type: String
   # Lambda
   pFnMemory:
     Type: Number
@@ -45,20 +43,21 @@ Resources:
           Name: AWS::Include
           Parameters:
             Location: openapi.yaml
-      EndpointConfiguration:
-        Type: PRIVATE
-        VPCEndpointIds:
-          - !Ref pVpcEndpointId
-      Auth:
-        ResourcePolicy:
-          SourceVpcWhitelist:
-            - !Ref pVpcId
+      # EndpointConfiguration:
+      #   Type: PRIVATE
+      #   VPCEndpointIds:
+      #     - !Ref pVpcEndpointId
+      # Auth:
+      #   ResourcePolicy:
+      #     SourceVpcWhitelist:
+      #       - !Ref pVpcId
   ApiLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub "/aws/apigateway/apigw-template-${Api}"
       RetentionInDays: 7
   ApiMapping:
+    DependsOn: Api
     Type: AWS::ApiGateway::BasePathMapping
     Properties:
       RestApiId: !Ref Api

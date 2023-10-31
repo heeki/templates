@@ -7,13 +7,22 @@ Copy `etc/environment.template` to `etc/environment.sh` and update accordingly.
 * `REGION`: your AWS region
 * `BUCKET`: your configuration bucket
 
-For the Lambda and API Gateway stack, update the following accordingly.
+For the infrastructure stack, update the following accordingly.
+* `P_HOSTEDZONE_ID`: hosted zone id for your public domain
+* `P_DOMAINNAME`: new subdomain name to configure in your public domain
+
+For the API Gateway and Lambda stack, update the following accordingly.
 * `P_STAGE`: stage name for API Gateway
 * `P_FN_MEMORY`: amount of memory in MB for the Lambda function
 * `P_FN_TIMEOUT`: timeout in seconds for the Lambda function
 
 ## Deployment
-Deploy the Lambda and API Gateway resources: `make apigw`
+Deploy the infrastructure resource: `make infrastructure`
+
+After completing the deployment, update the following outputs:
+* `O_CERT_ARN`: output certificate arn
+
+Deploy the API Gateway and Lambda resources: `make apigw`
 
 After completing the deployment, update the following outputs:
 * `O_FN`: output Lambda function name
@@ -22,6 +31,12 @@ After completing the deployment, update the following outputs:
 ## Testing
 Test the function locally: `make sam.local.invoke`
 
-Test the deployed function: `make sam.invoke.sync`
+Start a local API endpoint: `make sam.local.api`
 
-To test the API endpoint: `curl -s -XGET ${O_API_ENDPOINT} | jq`
+To test the local API endpoint: `curl -s -XGET http://127.0.0.1:3000 | jq`
+
+Test the deployed function: `make lambda.invoke.sync`
+
+To test the API endpoint with the default FQDN: `curl -s -XGET ${O_API_ENDPOINT} | jq`
+
+To test the API endpoint with the custom domain name: `curl -s -XGET https://${P_DOMAINNAME}/${P_API_BASEPATH} | jq`
