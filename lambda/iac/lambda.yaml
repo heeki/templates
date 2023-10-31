@@ -4,11 +4,12 @@ Transform: AWS::Serverless-2016-10-31
 Globals:
   Function:
     Layers:
-      - arn:aws:lambda:us-east-1:546275881527:layer:xray-python3:1
+      - arn:aws:lambda:us-east-1:546275881527:layer:xray-python3:3
       - arn:aws:lambda:us-east-1:546275881527:layer:boto3-1-26-101:4
       - arn:aws:lambda:us-east-1:580247275435:layer:LambdaInsightsExtension:38
-    MemorySize: !Ref pFnMemory
+      # - arn:aws:lambda:us-east-1:177933569100:layer:AWS-Parameters-and-Secrets-Lambda-Extension:2
     Runtime: python3.11
+    MemorySize: !Ref pFnMemory
     Timeout: !Ref pFnTimeout
     Tracing: Active
 Parameters:
@@ -78,25 +79,25 @@ Resources:
       #     SECRETS_MANAGER_TIMEOUT_MILLIS: 1000
       #     SECRETS_MANAGER_TTL: 300
       # Layers:
-      #   - 'arn:aws:lambda:us-east-1:177933569100:layer:AWS-Parameters-and-Secrets-Lambda-Extension:2'
+      #   - !Ref LayerTbd
   FnLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub '/aws/lambda/${Fn}'
       RetentionInDays: 7
-  LayerTbd:
-    Type: AWS::Serverless::LayerVersion
-    Properties:
-      CompatibleRuntimes:
-        - python3.8
-        - python3.9
-        - python3.10
-        - python3.11
-      ContentUri: ../tmp/tbd
-      LayerName: tbd
-      Description: tbd==0.0.306
+  # LayerTbd:
+  #   Type: AWS::Serverless::LayerVersion
+  #   Properties:
+  #     CompatibleRuntimes:
+  #       - python3.8
+  #       - python3.9
+  #       - python3.10
+  #       - python3.11
+  #     ContentUri: ../tmp/tbd
+  #     LayerName: tbd
+  #     Description: tbd==0.0.306
 Outputs:
   outFn:
     Value: !Ref Fn
-  outLayerTbd:
-    Value: !Ref LayerTbd
+  # outLayerTbd:
+  #   Value: !Ref LayerTbd
