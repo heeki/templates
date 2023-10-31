@@ -1,0 +1,55 @@
+service: lambda-template-sls
+frameworkVersion: '3'
+params:
+  default:
+    region: us-east-1
+    profile: 1527
+    stackName: lambda-template-sls
+    deploymentBucket: higs-serverless
+    runtime: python3.11
+    memorySize: 256
+    timeout: 30
+provider:
+  name: aws
+  stage: test
+  region: ${param:region}
+  profile: ${param:profile}
+  stackName: ${param:stackName}
+  deploymentMethod: changesets
+  deploymentPrefix: ${param:stackName}
+  deploymentBucket: ${param:deploymentBucket}
+  runtime: ${param:runtime}
+  memorySize: ${param:memorySize}
+  timeout: ${param:timeout}
+  tracing:
+    lambda: true
+  environment:
+    NAME: template
+  iam:
+    role:
+      path: /
+      statements:
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+          Resource: '*'
+        - Effect: Allow
+          Action:
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+            - logs:DescribeLogStreams
+          Resource: 'arn:aws:logs:*:*:log-group:*:*'
+        - Effect: Allow
+          Action:
+            - xray:PutTraceSegments
+            - xray:PutTelemetryRecords
+            - xray:GetSamplingRules
+            - xray:GetSamplingTargets
+            - xray:GetSamplingStatisticSummaries
+          Resource: '*'
+functions:
+  fn:
+    handler: src/fn.handler
+    layers:
+      - arn:aws:lambda:us-east-1:546275881527:layer:xray-python3:3
+      - arn:aws:lambda:us-east-1:580247275435:layer:LambdaInsightsExtension:38

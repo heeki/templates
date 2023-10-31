@@ -1,0 +1,8 @@
+# directories
+.serverless
+.vscode
+__pycache__
+tmp
+
+# files
+notes.md

@@ -8,3 +8,4 @@ This repository contains a set of templates that implement personal best practic
 * `lambda`: template that deploys a Lambda function
 * `sf`: template that deploys a Step Functions workflow with integration to a set of Lambda functions
 * `shared`: a set of reusable Python libraries that wrap AWS SDKs
+* `sls`: template using Serverless Framework that deploys a Lambda function
