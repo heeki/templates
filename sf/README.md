@@ -12,15 +12,15 @@ For the Lambda and Step Functions stack, update the following accordingly.
 * `P_FN_TIMEOUT`: timeout in seconds for the Lambda function
 
 ## Deployment
-Deploy the Lambda and API Gateway resources: `make apigw`
+Deploy the Step Functions and Lambda resources: `make sf`
 
 After completing the deployment, update the following outputs:
-* `O_FN`: output Lambda function name
-* `O_API_ENDPOINT`: output API Gateway endpoint, e.g. https://<api_id>.execute-api.<region>.amazonaws.com/<stage>
+* `O_FN`: output Lambda function name (select the one you want to test)
+* `O_SFN`: output Step Functions workflow ARN
 
 ## Testing
-Test the function locally: `make lambda.local`
+Test one of the functions locally (defaults to `Fn1`, update accordingly): `make lambda.local`
 
-Test the deployed function: `make lambda.invoke.sync`
+Test one of the deployed functions (function name you saved as `O_FN`): `make lambda.invoke.sync`
 
-Test the workflow: `make sf.invoke`
+Test the workflow (workflow ARN you saved as `O_SFN_ARN`): `make sf.invoke`
