@@ -19,7 +19,7 @@ Parameters:
     Type: String
   pLogGroup:
     Type: String
-    Default: /aws/ecs/buildit
+    Default: /aws/ecs/template
 Resources:
   ExecRole:
     Type: AWS::IAM::Role

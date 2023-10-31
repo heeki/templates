@@ -9,7 +9,7 @@ infrastructure.deploy:
 
 # fastapi testing
 fastapi:
-	cd src/application && uvicorn fapi:server --reload
+	cd src && uvicorn fapi:server --reload
 curl.fastapi.get:
 	curl -s -XGET http://127.0.0.1:8000/dice/\?name\=test | jq -c '.[]'
 curl.fastapi.post:
@@ -44,6 +44,6 @@ ecs.deploy:
 
 # ecs testing
 curl.ecs.get:
-	curl -s -XGET https://buildit.heeki.cloud/dice/\?name\=test | jq -c '.[]'
+	curl -s -XGET https://ecs.heeki.cloud/dice/\?name\=test | jq -c '.[]'
 curl.ecs.post:
 	curl -s -XPOST -H "content-type: application/json" -d @etc/payload.json https://buildit.heeki.cloud/dice/ | jq

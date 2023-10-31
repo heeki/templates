@@ -23,6 +23,7 @@ After completing the deployment, update the following outputs:
 * `O_ALB_TGROUP`: output target group ARN
 * `O_SGROUP_ALB`: output ALB security group ARN
 * `O_SGROUP_TASK`: output task security group ARN
+* `O_ECR_REPO`: output ECR repository name
 
 Build the docker file and push it to the ECR repository: `make docker`
 

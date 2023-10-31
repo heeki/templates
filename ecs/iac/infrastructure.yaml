@@ -101,11 +101,11 @@ Outputs:
     Value: !Ref AppSGroup
   outTaskSGroup:
     Value: !Ref TaskSGroup
-  outAppLB:
+  outALBArn:
     Value: !Ref AppLB
-  outAppLBDNSName:
+  outALBDNSName:
     Value: !GetAtt AppLB.DNSName
-  outAppTGroup:
+  outALBTGroup:
     Value: !Ref AppTargets
   outRepository:
     Value: !Ref Repository
