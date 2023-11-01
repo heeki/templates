@@ -1,0 +1,7 @@
+# typescript
+*.ts
+!*.d.ts
+
+# cdk
+.cdk.staging
+cdk.out
