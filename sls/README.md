@@ -1,5 +1,5 @@
 # Overview
-This directory is for deploying only a Lambda function using the Serverless Framework
+This directory is for deploying a Lambda function using the Serverless Framework.
 
 ## Pre-requisites
 Install the serverless framework:
