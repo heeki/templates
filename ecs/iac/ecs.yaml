@@ -111,6 +111,10 @@ Resources:
           PortMappings:
             - ContainerPort: 8080
               Protocol: tcp
+      Tags:
+        application:group: templates
+        application:subgroup: ecs
+        application:owner: heeki
   Service:
     Type: AWS::ECS::Service
     Properties:
@@ -128,6 +132,10 @@ Resources:
             - !Ref pTaskSGroup
           Subnets: !Ref pSubnetIds
       TaskDefinition: !Ref Task
+      Tags:
+        application:group: templates
+        application:subgroup: bastion
+        application:owner: heeki
 Outputs:
   outCluster:
     Value: !Ref Cluster

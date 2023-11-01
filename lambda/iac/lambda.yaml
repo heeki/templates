@@ -80,6 +80,10 @@ Resources:
       #     SECRETS_MANAGER_TTL: 300
       # Layers:
       #   - !Ref LayerTbd
+      Tags:
+        application:group: templates
+        application:subgroup: lambda
+        application:owner: heeki
   FnLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:

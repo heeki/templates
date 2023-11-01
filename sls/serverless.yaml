@@ -47,6 +47,10 @@ provider:
             - xray:GetSamplingTargets
             - xray:GetSamplingStatisticSummaries
           Resource: '*'
+  tags:
+    application:group: templates
+    application:subgroup: sls
+    application:owner: heeki
 functions:
   fn:
     handler: src/fn.handler

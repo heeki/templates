@@ -84,6 +84,10 @@ Resources:
           #!/bin/bash
           yum update -y
           yum install jq -y
+      Tags:
+        application:group: templates
+        application:subgroup: bastion
+        application:owner: heeki
 Outputs:
   outBastionPublicDnsName:
     Value: !GetAtt Bastion.PublicDnsName

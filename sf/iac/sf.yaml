@@ -79,6 +79,10 @@ Resources:
         Type: STANDARD
         Tracing:
           Enabled: false
+        Tags:
+            application:group: templates
+            application:subgroup: sf
+            application:owner: heeki
   SFnLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -135,6 +139,10 @@ Resources:
       CodeUri: ../src
       Handler: fn.handler
       Role: !GetAtt FnRole.Arn
+      Tags:
+        application:group: templates
+        application:subgroup: sf
+        application:owner: heeki
   Fn1LogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -146,6 +154,10 @@ Resources:
       CodeUri: ../src
       Handler: fn.handler
       Role: !GetAtt FnRole.Arn
+      Tags:
+        application:group: templates
+        application:subgroup: sf
+        application:owner: heeki
   Fn2ALogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -157,6 +169,10 @@ Resources:
       CodeUri: ../src
       Handler: fn.handler
       Role: !GetAtt FnRole.Arn
+      Tags:
+        application:group: templates
+        application:subgroup: sf
+        application:owner: heeki
   Fn2BLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -168,6 +184,10 @@ Resources:
       CodeUri: ../src
       Handler: fn.handler
       Role: !GetAtt FnRole.Arn
+      Tags:
+        application:group: templates
+        application:subgroup: sf
+        application:owner: heeki
   Fn3ALogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
@@ -179,6 +199,10 @@ Resources:
       CodeUri: ../src
       Handler: fn.handler
       Role: !GetAtt FnRole.Arn
+      Tags:
+        application:group: templates
+        application:subgroup: sf
+        application:owner: heeki
   Fn3BLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:

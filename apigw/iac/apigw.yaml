@@ -117,6 +117,10 @@ Resources:
       CodeUri: ../src
       Handler: fn.handler
       Role: !GetAtt FnRole.Arn
+      Tags:
+        application:group: templates
+        application:subgroup: apigw
+        application:owner: heeki
   FnLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
