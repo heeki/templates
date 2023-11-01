@@ -13,3 +13,4 @@ SAM and CloudFormation are my personal preferences for deploying AWS resources. 
 ## Alternate templates
 The examples below are some alternative infrastructure-as-code options.
 * `sls`: template using Serverless Framework that deploys a Lambda function
+* `terraform`: template using Terraform that deploys a Lambda function

@@ -1,0 +1,8 @@
+# directories
+iac/.terraform
+tmp
+
+# files
+iac/.terraform.lock*
+iac/terraform.tfstate*
+notes.md
