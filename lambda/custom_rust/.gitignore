@@ -1,0 +1,12 @@
+# directories
+.vscode
+build
+target
+tmp
+
+# files
+etc/*.json
+etc/*.sh
+iac/*_output.yaml
+build.toml
+notes.md
