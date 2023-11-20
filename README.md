@@ -6,6 +6,7 @@ SAM and CloudFormation are my personal preferences for deploying AWS resources. 
 * `apigw`: template that creates an API Gateway endpoint as defined by a separate OpenAPI specification and integrates with Lambda on the backend
 * `bastion`: template that deploys an EC2 instance as a bastion for access to private subnets
 * `ecs`: template that deploys an ALB, Fargate cluster, and Fargate service/task
+* `eventbridge`: template that deploys an EventBridge bus, rule, and Lambda function target
 * `lambda`: templates that deploy a Lambda function
 * `sf`: template that deploys a Step Functions workflow with integration to a set of Lambda functions
 * `shared`: a set of reusable Python libraries that wrap AWS SDKs

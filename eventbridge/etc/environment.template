@@ -1,0 +1,14 @@
+PROFILE=your-aws-cli-profile
+REGION=us-east-1
+BUCKET=your-configuration-bucket
+
+P_FN_MEMORY=128
+P_FN_TIMEOUT=15
+P_BUS_NAME="template"
+EVENTBRIDGE_STACK=eventbridge-template
+EVENTBRIDGE_TEMPLATE=iac/eventbridge.yaml
+EVENTBRIDGE_OUTPUT=iac/eventbridge_output.yaml
+EVENTBRIDGE_PARAMS="ParameterKey=pFnMemory,ParameterValue=${P_FN_MEMORY} ParameterKey=pFnTimeout,ParameterValue=${P_FN_TIMEOUT} ParameterKey=pBusName,ParameterValue=${P_BUS_NAME}"
+O_FN=output-fn-name
+O_BUS_ARN=output-eventbridge-bus-arn
+export EVENTBRIDGE_BUS_ARN = ${O_BUS_ARN}
