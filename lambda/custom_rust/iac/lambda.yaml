@@ -98,6 +98,10 @@ Resources:
             BatchSize: 1
             MaximumBatchingWindowInSeconds: 10
             Queue: !GetAtt Queue.Arn
+      LoggingConfig:
+        ApplicationLogLevel: INFO
+        LogFormat: JSON
+        SystemLogLevel: INFO
       Tags:
         application:group: templates
         application:subgroup: lambda
