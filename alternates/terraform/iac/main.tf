@@ -50,17 +50,6 @@ resource "aws_iam_policy" "lambda_policy_cloudwatch" {
                     "logs:DescribeLogStreams"
                 ]
                 Resource = "arn:aws:logs:*:*:log-group:*:*"
-            },
-            {
-                Effect = "Allow",
-                Action = [
-                    "xray:PutTraceSegments",
-                    "xray:PutTelemetryRecords",
-                    "xray:GetSamplingRules",
-                    "xray:GetSamplingTargets",
-                    "xray:GetSamplingStatisticSummaries"
-                ]
-                Resource = "*"
             }
         ]
     })
