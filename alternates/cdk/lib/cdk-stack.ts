@@ -8,6 +8,13 @@ export class CdkStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    const fnMemory = new cdk.CfnParameter(this, "fnMemory", {
+      type: "Number"
+    });
+    const fnTimeout = new cdk.CfnParameter(this, "fnTimeout", {
+      type: "Number"
+    });
+
     const role = new iam.Role(this, "fnRole", {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com")
     });
@@ -62,7 +69,8 @@ export class CdkStack extends cdk.Stack {
     );
     const fn = new lambda.Function(this, "fn", {
       runtime: lambda.Runtime.PYTHON_3_11,
-      timeout: cdk.Duration.seconds(30),
+      memorySize: fnMemory.valueAsNumber,
+      timeout: cdk.Duration.seconds(fnTimeout.valueAsNumber),
       code: lambda.Code.fromAsset("src"),
       handler: "fn.handler",
       role: role,

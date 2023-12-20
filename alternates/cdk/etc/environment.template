@@ -1,1 +1,6 @@
+P_FN_MEMORY=128
+P_FN_TIMEOUT=15
+
 CDK_STACK=your-stack-name
+CDK_PARAMS=--parameters fnMemory=${P_FN_MEMORY}
+CDK_PARAMS+=--parameters fnTimeout=${P_FN_TIMEOUT}
