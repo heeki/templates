@@ -42,7 +42,7 @@ Resources:
         Fn::Transform:
           Name: AWS::Include
           Parameters:
-            Location: openapi.yaml
+            Location: ../openapi.yaml
       # EndpointConfiguration:
       #   Type: PRIVATE
       #   VPCEndpointIds:
@@ -56,16 +56,16 @@ Resources:
     Properties:
       LogGroupName: !Sub "/aws/apigateway/apigw-template-${Api}"
       RetentionInDays: 7
-  ApiMapping:
-    DependsOn: Api
-    Type: AWS::ApiGateway::BasePathMapping
-    Properties:
-      RestApiId: !Ref Api
-      BasePath: !Ref pApiBasePath
-      DomainName: !Ref pApiDomainName
-      Stage: !Ref pApiStage
-    DependsOn:
-      - ApiStage
+  # ApiMapping:
+  #   DependsOn: Api
+  #   Type: AWS::ApiGateway::BasePathMapping
+  #   Properties:
+  #     RestApiId: !Ref Api
+  #     BasePath: !Ref pApiBasePath
+  #     DomainName: !Ref pApiDomainName
+  #     Stage: !Ref pApiStage
+  #   DependsOn:
+  #     - ApiStage
   # Lambda
   FnRole:
     Type: AWS::IAM::Role
@@ -114,7 +114,7 @@ Resources:
   Fn:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ../src
+      CodeUri: ../../src
       Handler: fn.handler
       Role: !GetAtt FnRole.Arn
       Tags:

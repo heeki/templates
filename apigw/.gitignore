@@ -4,8 +4,8 @@ build
 tmp
 
 # files
-etc/*.json
-etc/*.sh
-iac/*_output.yaml
+*.json
+*.sh
+*_output.yaml
 build.toml
 notes.md
