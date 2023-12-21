@@ -10,3 +10,7 @@ SF_OUTPUT=iac/sam/sf_output.yaml
 SF_PARAMS="ParameterKey=pAslBucket,ParameterValue=${P_ASLBUCKET} ParameterKey=pAslKey,ParameterValue=${P_ASLKEY} ParameterKey=pFnMemory,ParameterValue=${P_FN_MEMORY} ParameterKey=pFnTimeout,ParameterValue=${P_FN_TIMEOUT}"
 O_FN=output-fn
 O_SF_ARN=output-sf-arn
+
+CDK_STACK=sf-cdk-template
+CDK_PARAMS=--parameters fnMemory=${P_FN_MEMORY}
+CDK_PARAMS+=--parameters fnTimeout=${P_FN_TIMEOUT}
