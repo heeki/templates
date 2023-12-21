@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.1
 info:
   title: apigw-template
   description: Base template for API Gateway endpoints
@@ -37,7 +37,7 @@ components:
     users:
       type: array
       items:
-        $ref: '#/components/schemas/user'
+        $ref: "#/components/schemas/user"
     uid:
       type: object
       properties:
@@ -49,10 +49,10 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/error'
+            $ref: "#/components/schemas/error"
           example:
             code: 500
-            message: 'unable to retrieve message'
+            message: "unable to retrieve message"
 
 paths:
   /:
@@ -65,11 +65,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: "#/components/schemas/user"
         500:
-          $ref: '#/components/responses/error'
+          $ref: "#/components/responses/error"
         default:
-          $ref: '#/components/responses/error'
+          $ref: "#/components/responses/error"
       x-amazon-apigateway-integration:
         httpMethod: POST
         payloadFormatVersion: "1.0"
@@ -78,7 +78,7 @@ paths:
             statusCode: 200
         type: AWS_PROXY
         uri:
-          Fn::Sub: 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${Fn.Arn}/invocations'
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${Fn}/invocations"
     post:
       summary: user
       description: create user
@@ -86,29 +86,29 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/user'
+              $ref: "#/components/schemas/user"
             examples:
               acme:
                 value:
-                  uid: 'eac9f980-8180-49d8-836c-c01386bc94cf'
-                  name: 'Acme'
-                  email: 'contact@acme.com'
+                  uid: "eac9f980-8180-49d8-836c-c01386bc94cf"
+                  name: "Acme"
+                  email: "contact@acme.com"
               hooli:
                 value:
-                  uid: 'c92d40d1-5391-4c48-9f7e-51091cd9e551'
-                  name: 'Hooli'
-                  email: 'contact@hooli.com'
+                  uid: "c92d40d1-5391-4c48-9f7e-51091cd9e551"
+                  name: "Hooli"
+                  email: "contact@hooli.com"
       responses:
         200:
           description: ok
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: "#/components/schemas/user"
         500:
-          $ref: '#/components/responses/error'
+          $ref: "#/components/responses/error"
         default:
-          $ref: '#/components/responses/error'
+          $ref: "#/components/responses/error"
       x-amazon-apigateway-integration:
         httpMethod: POST
         payloadFormatVersion: "1.0"
@@ -117,107 +117,4 @@ paths:
             statusCode: 200
         type: AWS_PROXY
         uri:
-          Fn::Sub: 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${Fn.Arn}/invocations'
-  /{uid}:
-    get:
-      summary: user
-      description: returns user details
-      parameters:
-        - in: path
-          name: uid
-          required: true
-          schema:
-            type: string
-          description: user id
-      responses:
-        200:
-          description: ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/user'
-        500:
-          $ref: '#/components/responses/error'
-        default:
-          $ref: '#/components/responses/error'
-      x-amazon-apigateway-integration:
-        httpMethod: POST
-        payloadFormatVersion: "1.0"
-        responses:
-          default:
-            statusCode: 200
-        type: AWS_PROXY
-        uri:
-          Fn::Sub: 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${Fn.Arn}/invocations'
-    post:
-      summary: user
-      description: update user
-      parameters:
-        - in: path
-          name: uid
-          required: true
-          schema:
-            type: string
-          description: user
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/user'
-            examples:
-              acme:
-                value:
-                  uid: 'eac9f980-8180-49d8-836c-c01386bc94cf'
-                  name: 'Acme'
-                  email: 'contact@acme.com'
-              hooli:
-                value:
-                  uid: 'c92d40d1-5391-4c48-9f7e-51091cd9e551'
-                  name: 'Hooli'
-                  email: 'contact@hooli.com'
-      responses:
-        200:
-          description: ok
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/user'
-        500:
-          $ref: '#/components/responses/error'
-        default:
-          $ref: '#/components/responses/error'
-      x-amazon-apigateway-integration:
-        httpMethod: POST
-        payloadFormatVersion: "1.0"
-        responses:
-          default:
-            statusCode: 200
-        type: AWS_PROXY
-        uri:
-          Fn::Sub: 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${Fn.Arn}/invocations'
-    delete:
-      summary: user
-      description: deletes user
-      parameters:
-        - in: path
-          name: uid
-          required: true
-          schema:
-            type: string
-          description: user id
-      responses:
-        200:
-          description: ok
-        500:
-          $ref: '#/components/responses/error'
-        default:
-          $ref: '#/components/responses/error'
-      x-amazon-apigateway-integration:
-        httpMethod: POST
-        payloadFormatVersion: "1.0"
-        responses:
-          default:
-            statusCode: 200
-        type: AWS_PROXY
-        uri:
-          Fn::Sub: 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${Fn.Arn}/invocations'
+          Fn::Sub: "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${Fn}/invocations"

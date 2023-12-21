@@ -4,7 +4,7 @@ build
 tmp
 
 # files
-*.json
+etc/*.json
 *.sh
 *_output.yaml
 build.toml

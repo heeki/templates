@@ -13,6 +13,8 @@ apigw.package:
 	sam package -t ${APIGW_TEMPLATE} --output-template-file ${APIGW_OUTPUT} --s3-bucket ${BUCKET} --s3-prefix ${APIGW_STACK}
 apigw.deploy:
 	sam deploy -t ${APIGW_OUTPUT} --stack-name ${APIGW_STACK} --parameter-overrides ${APIGW_PARAMS} --capabilities CAPABILITY_NAMED_IAM
+apigw.delete:
+	sam delete --stack-name ${APIGW_STACK}
 
 # local testing
 sam.local.api:
@@ -28,5 +30,12 @@ lambda.invoke.sync:
 	aws --profile ${PROFILE} lambda invoke --function-name ${O_FN} --invocation-type RequestResponse --payload file://etc/event.json --cli-binary-format raw-in-base64-out --log-type Tail tmp/fn.json | jq "." > tmp/response.json
 	cat tmp/response.json | jq -r ".LogResult" | base64 --decode
 	cat tmp/fn.json | jq
-slambdam.invoke.async:
+lambda.invoke.async:
 	aws --profile ${PROFILE} lambda invoke --function-name ${O_FN} --invocation-type Event --payload file://etc/event.json --cli-binary-format raw-in-base64-out --log-type Tail tmp/fn.json | jq "."
+
+cdk.synth:
+	cd iac/cdk && cdk synth ${CDK_PARAMS}
+cdk.deploy:
+	cd iac/cdk && cdk deploy --context stackName=${CDK_STACK} ${CDK_PARAMS}
+cdk.destroy:
+	cd iac/cdk && cdk destroy --context stackName=${CDK_STACK} ${CDK_PARAMS}
