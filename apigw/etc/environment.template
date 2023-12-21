@@ -22,6 +22,8 @@ O_FN=output-fn
 O_API_ENDPOINT=output-api-endpoint
 
 CDK_STACK=apigw-cdk-template
-CDK_PARAMS=--parameters apiStage=${P_API_STAGE}
+CDK_PARAMS=--parameters hostedZoneId=${P_HOSTEDZONE_ID}
+CDK_PARAMS+=--parameters domainName=${P_DOMAINNAME}
+CDK_PARAMS+=--parameters apiStage=${P_API_STAGE}
 CDK_PARAMS+=--parameters fnMemory=${P_FN_MEMORY}
 CDK_PARAMS+=--parameters fnTimeout=${P_FN_TIMEOUT}
