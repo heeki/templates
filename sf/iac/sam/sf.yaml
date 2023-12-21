@@ -29,7 +29,7 @@ Resources:
                 - states.amazonaws.com
             Action:
               - sts:AssumeRole
-      Path: '/service-role/'
+      Path: /
       Policies:
         - PolicyName: cloudwatch-logs
           PolicyDocument:
@@ -62,7 +62,7 @@ Resources:
   SFn:
     Type: AWS::Serverless::StateMachine
     Properties:
-        DefinitionUri: ./asl.json
+        DefinitionUri: ../asl.json
         DefinitionSubstitutions:
           Fn1: !GetAtt Fn1.Arn
           Fn2A: !GetAtt Fn2A.Arn
@@ -101,7 +101,7 @@ Resources:
                 - lambda.amazonaws.com
             Action:
               - sts:AssumeRole
-      Path: '/service-role/'
+      Path: /
       Policies:
         - PolicyName: cloudwatch-insights
           PolicyDocument:
@@ -136,7 +136,7 @@ Resources:
   Fn1:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ../src
+      CodeUri: ../../src
       Handler: fn.handler
       Role: !GetAtt FnRole.Arn
       Tags:
@@ -151,7 +151,7 @@ Resources:
   Fn2A:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ../src
+      CodeUri: ../../src
       Handler: fn.handler
       Role: !GetAtt FnRole.Arn
       Tags:
@@ -166,7 +166,7 @@ Resources:
   Fn2B:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ../src
+      CodeUri: ../../src
       Handler: fn.handler
       Role: !GetAtt FnRole.Arn
       Tags:
@@ -181,7 +181,7 @@ Resources:
   Fn3A:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ../src
+      CodeUri: ../../src
       Handler: fn.handler
       Role: !GetAtt FnRole.Arn
       Tags:
@@ -196,7 +196,7 @@ Resources:
   Fn3B:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ../src
+      CodeUri: ../../src
       Handler: fn.handler
       Role: !GetAtt FnRole.Arn
       Tags:
