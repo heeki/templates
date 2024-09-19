@@ -26,6 +26,10 @@ def build_response(code, body):
     return response
 
 def handler(event, context):
-    output = build_response(200, json.dumps(event))
+    transform = {
+        "event": event,
+        "message": "hello world"
+    }
+    output = build_response(200, transform)
     print(json.dumps(output))
     return output
