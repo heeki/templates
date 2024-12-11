@@ -11,4 +11,4 @@ P_SSH_KEY=your-ec2-ssh-keypair-name
 EC2_STACK=ec2-template
 EC2_TEMPLATE=iac/ec2.yaml
 EC2_OUTPUT=iac/ec2_output.yaml
-EC2_PARAMS="ParameterKey=pVpcId,ParameterValue=${P_VPC_ID} ParameterKey=pSubnetIds,ParameterValue=${P_SUBNET_IDS} ParameterKey=pIngressCidr,ParameterValue=${P_INGRESS_CIDR} ParameterKey=pImageId,ParameterValue=${P_IMAGE_ID} ParameterKey=pInstanceType,ParameterValue=${P_INSTANCE_TYPE} ParameterKey=pKey,ParameterValue=${P_SSH_KEY} ParameterKey=pApiEndpoint,ParameterValue=${P_API_ENDPOINT}"
+EC2_PARAMS="ParameterKey=vpcId,ParameterValue=${P_VPC_ID} ParameterKey=subnetIds,ParameterValue=${P_SUBNET_IDS} ParameterKey=ingressCidr,ParameterValue=${P_INGRESS_CIDR} ParameterKey=imageId,ParameterValue=${P_IMAGE_ID} ParameterKey=instanceType,ParameterValue=${P_INSTANCE_TYPE} ParameterKey=key,ParameterValue=${P_SSH_KEY}"

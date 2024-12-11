@@ -1,33 +1,41 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: Bastion template
+Description: Instance template
 Transform: AWS::Serverless-2016-10-31
 Parameters:
-  pVpcId:
+  vpcId:
     Type: String
-  pSubnetIds:
+  availabilityZones:
     Type: List<String>
-  pIngressCidr:
+  subnetIds:
+    Type: List<String>
+  ingressCidr:
     Type: String
-  pImageId:
+  imageId:
     Type: String
-  pInstanceType:
+  instanceType:
     Type: String
-  pKey:
+  volumeSize:
+    Type: Number
+  key:
     Type: String
 Resources:
   # Security Groups
-  BastionSecurityGroup:
+  SecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Security group for bastion
-      VpcId: !Ref pVpcId
+      GroupDescription: Security group for instance
+      VpcId: !Ref vpcId
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 22
           ToPort: 22
-          CidrIp: !Ref pIngressCidr
-  # Bastion
-  BastionRole:
+          CidrIp: !Ref ingressCidr
+        - IpProtocol: tcp
+          FromPort: 8080
+          ToPort: 8080
+          CidrIp: !Ref ingressCidr
+  # Instance
+  Role:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -39,7 +47,7 @@ Resources:
                 - ec2.amazonaws.com
             Action:
               - sts:AssumeRole
-      Path: '/service-role/'
+      Path: /
       Policies:
         - PolicyName: cloudwatch-logs
           PolicyDocument:
@@ -60,38 +68,68 @@ Resources:
                 Action:
                   - cloudformation:ListStacks
                 Resource: !Sub 'arn:aws:cloudformation:*:${AWS::AccountId}:stack/*/*'
-  BastionProfile:
+  Profile:
     Type: AWS::IAM::InstanceProfile
     Properties:
       Path: /
       Roles:
-        - !Ref BastionRole
-  Bastion:
+        - !Ref Role
+  Volume:
+    Type: AWS::EC2::Volume
+    Properties:
+      AvailabilityZone: !Select ["0", !Ref availabilityZones]
+      Encrypted: false
+      Size: !Ref volumeSize
+      Tags:
+        - Key: application:group
+          Value: templates
+        - Key: application:subgroup
+          Value: ec2
+        - Key: application:owner
+          Value: heeki
+  VolumeAttachment:
+    Type: AWS::EC2::VolumeAttachment
+    Properties:
+      Device: /dev/sdf
+      InstanceId: !Ref Instance
+      VolumeId: !Ref Volume
+  Instance:
     Type: AWS::EC2::Instance
     Properties:
-      IamInstanceProfile: !Ref BastionProfile
-      ImageId: !Ref pImageId
-      InstanceType: !Ref pInstanceType
-      KeyName: !Ref pKey
+      EbsOptimized: true
+      IamInstanceProfile: !Ref Profile
+      ImageId: !Ref imageId
+      InstanceType: !Ref instanceType
+      KeyName: !Ref key
       NetworkInterfaces:
         - AssociatePublicIpAddress: true
           DeviceIndex: 0
           GroupSet:
-            - !Ref BastionSecurityGroup
-          SubnetId: !Select ["0", !Ref pSubnetIds]
+            - !Ref SecurityGroup
+          SubnetId: !Select ["0", !Ref subnetIds]
       UserData:
         Fn::Base64: !Sub |
           #!/bin/bash
           yum update -y
           yum install jq -y
+          mkdir /mnt/volume
+          mkfs -t xfs /dev/xvdf
+          lsblk -f
+          mount /dev/sdf /mnt/volume
+          chown ec2-user:ec2-user /mnt/volume
+          echo "/dev/sdf /mnt/volume xfs defaults 0 2" >> /etc/fstab
+          mount -a
       Tags:
-        application:group: templates
-        application:subgroup: bastion
-        application:owner: heeki
+        - Key: application:group
+          Value: templates
+        - Key: application:subgroup
+          Value: ec2
+        - Key: application:owner
+          Value: heeki
 Outputs:
-  outBastionPublicDnsName:
-    Value: !GetAtt Bastion.PublicDnsName
-  outBastionPublicIp:
-    Value: !GetAtt Bastion.PublicIp
-  outBastionSecurityGroup:
-    Value: !Ref BastionSecurityGroup
+  outPublicDnsName:
+    Value: !GetAtt Instance.PublicDnsName
+  outPublicIp:
+    Value: !GetAtt Instance.PublicIp
+  outSecurityGroup:
+    Value: !Ref SecurityGroup
